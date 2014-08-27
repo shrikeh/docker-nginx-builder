@@ -1,0 +1,19 @@
+---
+- name: Create the working directory
+  file: path={{ docker_working_dir }} state=directory
+  sudo: yes
+
+- name: Create the Dockerfile from the template
+  template: src=Dockerfile-{{ docker_build_os }}.j2 dest={{ docker_working_dir }}/Dockerfile group=root
+  sudo: yes
+
+- name: Create the inventory file from the template
+  template: src=inventory.j2 dest={{ docker_working_dir }}/inventory group=root
+
+- name: Build the image
+  sudo: yes
+  docker_image: path={{ docker_working_dir }} name={{ docker_image_name }} state=build
+
+- name: Run the image
+  sudo: yes
+  docker: image={{ docker_image_name }} state=running volumes=

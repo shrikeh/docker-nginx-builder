@@ -1,0 +1,15 @@
+
+FROM        {{ docker_target_image_name }}:{{ docker_target_image_tag }}
+
+MAINTAINER  {{ docker_maintainer }}
+
+RUN         apt-get update -y
+RUN         apt-get upgrade -y
+RUN         apt-get install -y python-yaml python-jinja2 git
+RUN         git clone https://github.com/ansible/ansible.git /tmp/ansible
+RUN         apt-get remove -y --purge --auto-remove git
+WORKDIR     /tmp/ansible
+ENV         PATH /tmp/ansible/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/bin:/bin
+ENV         ANSIBLE_LIBRARY /tmp/ansible/library
+ENV         PYTHONPATH /tmp/ansible/lib:$PYTHON_PATH
+ADD         inventory /etc/ansible/hosts

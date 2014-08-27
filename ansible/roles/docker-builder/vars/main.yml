@@ -1,0 +1,7 @@
+---
+docker_maintainer:      "shrikeh"
+docker_build_os:        "ubuntu"
+docker_working_dir:     /tmp/docker
+docker_target_image_name: "ubuntu"
+docker_target_image_tag:  "14.04"
+docker_image_name:      "shrikeh/ubuntu"

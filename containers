@@ -1,0 +1,5 @@
+---
+- hosts: docker-nginx-builder
+  connection: local
+  roles:
+    - nginx-builder
