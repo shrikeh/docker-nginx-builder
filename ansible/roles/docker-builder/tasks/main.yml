@@ -1,19 +1,23 @@
 ---
 - name: Create the working directory
-  file: path={{ docker_working_dir }} state=directory
+  file: path={{ docker_builder_working_dir }} state=directory
   sudo: yes
 
 - name: Create the Dockerfile from the template
-  template: src=Dockerfile-{{ docker_build_os }}.j2 dest={{ docker_working_dir }}/Dockerfile group=root
+  template: src=Dockerfile-{{ docker_builder_build_os }}.j2 dest={{ docker_builder_working_dir }}/Dockerfile group=root
   sudo: yes
 
 - name: Create the inventory file from the template
-  template: src=inventory.j2 dest={{ docker_working_dir }}/inventory group=root
+  template: src=inventory.j2 dest={{ docker_builder_working_dir }}/inventory group=root
 
 - name: Build the image
   sudo: yes
-  docker_image: path={{ docker_working_dir }} name={{ docker_image_name }} state=build
+  docker_image: path={{ docker_builder_working_dir }} name={{ docker_builder_image_name }} state=build
+
+- name: Create the output directory
+  file: path={{ docker_builder_output_dir }} state=directory
+  sudo: yes
 
 - name: Run the image
   sudo: yes
-  docker: image={{ docker_image_name }} state=running volumes=
+  docker: image={{ docker_builder_image_name }} state=running volumes={{ docker_builder_output_dir }}:/var/output

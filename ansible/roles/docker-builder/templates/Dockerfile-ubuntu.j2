@@ -1,7 +1,7 @@
 
-FROM        {{ docker_target_image_name }}:{{ docker_target_image_tag }}
+FROM        {{ docker_builder_target_image_name }}:{{ docker_builder_target_image_tag }}
 
-MAINTAINER  {{ docker_maintainer }}
+MAINTAINER  {{ docker_builder_maintainer }}
 
 RUN         apt-get update -y
 RUN         apt-get upgrade -y
